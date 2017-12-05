@@ -1,13 +1,18 @@
 package com.mvp.movie;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -18,13 +23,26 @@ import android.widget.Toast;
 import com.mvp.movie.adapter.MovieAdapter;
 import com.mvp.movie.adapter.holder.MovieHolder;
 import com.mvp.movie.adapter.model.MovieModel;
+import com.mvp.movie.model.Abs;
+import com.mvp.movie.model.AbsCon;
+import com.mvp.movie.model.JustImmutableClass;
+import com.mvp.movie.model.Movie;
+import com.mvp.movie.model.MovieChild;
 import com.mvp.movie.presentor.MoviePresenter;
 import com.mvp.movie.presentor.MoviePresenterImpl;
 import com.mvp.movie.service.BoundService;
+import com.mvp.movie.thread.ThreadRunnable;
 import com.mvp.movie.view.MovieView;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Random;
+import java.util.Scanner;
 import java.util.logging.Logger;
 
 /**
@@ -45,13 +63,11 @@ public class MovieActivity extends Activity implements View.OnClickListener, Mov
     private LinearLayoutManager linearLayoutManager;
     private MovieAdapter movieAdapter;
     private ArrayList<MovieModel> data;
-
-    final Object lock = new Object();
-
-    boolean result = true;
-    private boolean pizzaArrived = false;
     private BoundService serviceInstance;
     private Intent intent;
+    private final boolean showActivity = true;
+    String s;
+    Movie movieChild;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -59,33 +75,9 @@ public class MovieActivity extends Activity implements View.OnClickListener, Mov
         setContentView(R.layout.activity_movie);
         context = getApplicationContext();
         setupViews();
-        moviePresenter = new MoviePresenterImpl(this);
-        intent = new Intent(this, BoundService.class);
-        bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+        moviePresenter = new MoviePresenterImpl(this,new ConnectionManager());
+        movieChild = new MovieChild();
     }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        unbindService(serviceConnection);
-    }
-
-    ServiceConnection serviceConnection = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            if (service instanceof BoundService.MyBinder) {
-                serviceInstance = ((BoundService.MyBinder) service).getServiceInstance();
-                serviceInstance.shouldStopService(false);
-            }
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            if (serviceInstance != null) {
-                serviceInstance.shouldStopService(true);
-            }
-        }
-    };
 
     private void setupViews() {
         findViewById(R.id.btnSearch).setOnClickListener(this);
@@ -103,17 +95,30 @@ public class MovieActivity extends Activity implements View.OnClickListener, Mov
         recyclerViewMovies.setAdapter(movieAdapter);
     }
 
-
     @Override
     public void onClick(View v) {
-        String name = edtMovieName.getText().toString();
-        moviePresenter.onSubmitClicked(name);
+        moviePresenter.onSubmitClicked();
     }
 
     @Override
     protected void onDestroy() {
         moviePresenter.onDestroy();
         super.onDestroy();
+    }
+
+    @Override
+    public void emptyMovieName(int resId) {
+        Toast.makeText(context, getString(resId), Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void internetRequired(int resId) {
+        Toast.makeText(context, getString(resId), Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public String getMovieName() {
+        return edtMovieName.getText().toString();
     }
 
     @Override

@@ -21,8 +21,17 @@ public class Movie {
     private Integer totalPages;
     @SerializedName("results")
     @Expose
-
     private List<Result> results = null;
+
+    public int getProtectedVar() {
+        return protectedVar;
+    }
+
+    public void setProtectedVar(int protectedVar) {
+        this.protectedVar = protectedVar;
+    }
+
+    protected int protectedVar;
 
     public Integer getPage() {
         return page;
@@ -55,5 +64,15 @@ public class Movie {
     public void setResults(List<Result> results) {
         this.results = results;
     }
+
+
+    private static void iamprivate(){
+
+    }
+
+    public static void iamstatic(){
+
+    }
+
 
 }

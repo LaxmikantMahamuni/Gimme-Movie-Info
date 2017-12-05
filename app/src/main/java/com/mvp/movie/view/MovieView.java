@@ -10,6 +10,13 @@ import java.util.List;
  */
 
 public interface MovieView {
+
+    void emptyMovieName(int resId);
+
+    void internetRequired(int resId);
+
+    String getMovieName();
+
     void onSuccess(List<MovieModel> movieModel);
 
     void onFailed(String errorMessage);

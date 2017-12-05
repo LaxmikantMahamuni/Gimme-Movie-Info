@@ -5,7 +5,7 @@ package com.mvp.movie.presentor;
  */
 
 public interface MoviePresenter {
-    void onSubmitClicked(String movieName);
+    void onSubmitClicked();
 
     void onDestroy();
 }

@@ -43,6 +43,18 @@ public class BoundService extends Service {
         }
     }
 
+    @Override
+    public boolean stopService(Intent name) {
+        Log.d(TAG, " service stopped ");
+        return super.stopService(name);
+    }
+
+    @Override
+    public boolean onUnbind(Intent intent) {
+        Log.d(TAG, " service onUnbind ");
+        shouldStopService(true);
+        return super.onUnbind(intent);
+    }
 
     public void shouldStopService(boolean _shouldStopService) {
 
@@ -74,15 +86,13 @@ public class BoundService extends Service {
         millis -= TimeUnit.MINUTES.toMillis(minutes);
         long seconds = TimeUnit.MILLISECONDS.toSeconds(millis);
 
-        String sb = String.valueOf(days) +
+        return (String.valueOf(days) +
                 " Days " +
                 hours +
                 " Hours " +
                 minutes +
                 " Minutes " +
                 seconds +
-                " Seconds";
-
-        return (sb);
+                " Seconds");
     }
 }

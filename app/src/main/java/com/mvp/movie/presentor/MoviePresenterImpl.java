@@ -4,6 +4,9 @@ package com.mvp.movie.presentor;
  * Created by hardik on 01/11/17.
  */
 
+import com.mvp.movie.ConnectionManager;
+import com.mvp.movie.Connectivity;
+import com.mvp.movie.R;
 import com.mvp.movie.adapter.model.MovieModel;
 import com.mvp.movie.model.Result;
 import com.mvp.movie.presentor.intercator.MovieInteractor;
@@ -24,19 +27,28 @@ import java.util.List;
 public class MoviePresenterImpl implements MoviePresenter, MovieInteractor.OnMovieResultListener {
     private MovieView movieView;
     private MovieInteractor movieIntercator;
+    private Connectivity connectivity;
 
     //Now we need this presenter to speak to repo :: An Interactor
-    public MoviePresenterImpl(MovieView param) {
+    public MoviePresenterImpl(MovieView param,Connectivity connectivity) {
         movieView = param;
         movieIntercator = new MovieInteractorImpl();
+        this.connectivity = connectivity;
     }
 
     /**
      * Accessed by View
-     *
-     * @param movieName movie name as query
      */
-    public void onSubmitClicked(String movieName) {
+    public void onSubmitClicked() {
+        String movieName = movieView.getMovieName();
+        if (movieName.isEmpty()) {
+            movieView.emptyMovieName(R.string.error_empty_movie_name);
+            return;
+        }
+        if (!connectivity.isConnected()) {
+            movieView.internetRequired(R.string.error_no_internet);
+            return;
+        }
         movieIntercator.getMovieInfo(movieName, this);
     }
 
@@ -58,7 +70,7 @@ public class MoviePresenterImpl implements MoviePresenter, MovieInteractor.OnMov
             ArrayList<MovieModel> data = new ArrayList<>();
             List<Result> resultList = movie.getResults();
             for (Result var : resultList) {
-                MovieModel var2 = new MovieModel(var.getId(),var.getTitle(), String.valueOf(var.getVoteAverage()), var.getReleaseDate(), var.getOverview(),var.getPosterPath());
+                MovieModel var2 = new MovieModel(var.getId(), var.getTitle(), String.valueOf(var.getVoteAverage()), var.getReleaseDate(), var.getOverview(), var.getPosterPath());
                 data.add(var2);
             }
             movieView.onSuccess(data);

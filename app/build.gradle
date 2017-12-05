@@ -1,14 +1,14 @@
 apply plugin: 'com.android.application'
 
 apply plugin: 'kotlin-android'
-
-def retrofit_version = "2.3.0"
-def google_play_services = "26.0.0"
-def okhttp3_version = "3.9.0"
-
+ext{
+    retrofit_version = '2.3.0'
+    google_play_services = '26.0.0'
+    okhttp3_version = '3.9.0'
+}
 android {
     compileSdkVersion 26
-    buildToolsVersion "26.0.1"
+    buildToolsVersion "26.0.2"
     defaultConfig {
         applicationId "com.mvp.movie"
         minSdkVersion 21
@@ -51,4 +51,6 @@ dependencies {
     compile 'com.android.support:multidex:1.0.1'
     testCompile 'junit:junit:4.12'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    testCompile 'org.mockito:mockito-core:2.8.47'
+
 }

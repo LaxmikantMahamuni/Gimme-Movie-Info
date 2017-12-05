@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Threading</string>
+    <string name="error_empty_movie_name">Movie name cannot be empty</string>
+    <string name="error_no_internet">Internet connection require</string>
 </resources>

@@ -30,9 +30,9 @@ public class MoviePresenterImpl implements MoviePresenter, MovieInteractor.OnMov
     private Connectivity connectivity;
 
     //Now we need this presenter to speak to repo :: An Interactor
-    public MoviePresenterImpl(MovieView param,Connectivity connectivity) {
+    public MoviePresenterImpl(MovieView param,Connectivity connectivity,MovieInteractor movieIntercator) {
         movieView = param;
-        movieIntercator = new MovieInteractorImpl();
+        this.movieIntercator = movieIntercator;
         this.connectivity = connectivity;
     }
 

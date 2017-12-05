@@ -30,6 +30,7 @@ import com.mvp.movie.model.Movie;
 import com.mvp.movie.model.MovieChild;
 import com.mvp.movie.presentor.MoviePresenter;
 import com.mvp.movie.presentor.MoviePresenterImpl;
+import com.mvp.movie.presentor.intercator.MovieInteractorImpl;
 import com.mvp.movie.service.BoundService;
 import com.mvp.movie.thread.ThreadRunnable;
 import com.mvp.movie.view.MovieView;
@@ -70,7 +71,7 @@ public class MovieActivity extends Activity implements View.OnClickListener, Mov
         setContentView(R.layout.activity_movie);
         context = getApplicationContext();
         setupViews();
-        moviePresenter = new MoviePresenterImpl(this,new ConnectionManager());
+        moviePresenter = new MoviePresenterImpl(this,new ConnectionManager(),new MovieInteractorImpl());
     }
 
     private void setupViews() {

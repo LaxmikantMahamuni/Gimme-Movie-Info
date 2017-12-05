@@ -2,6 +2,7 @@ package com.mvp.movie.presentor;
 
 import com.mvp.movie.Connectivity;
 import com.mvp.movie.R;
+import com.mvp.movie.adapter.model.MovieModel;
 import com.mvp.movie.model.Movie;
 import com.mvp.movie.model.Result;
 import com.mvp.movie.presentor.intercator.MovieInteractor;
@@ -64,7 +65,6 @@ public class MoviePresenterImplTest {
     }
 
     @Test
-
     public void shouldShowSuccess() throws Exception {
         final int index = 1;
         when(movieView.getMovieName()).thenReturn(moviename);
@@ -95,6 +95,7 @@ public class MoviePresenterImplTest {
 
         //Perform onclick and check if test runs success
         moviePresenter.onSubmitClicked();
+        verify(movieView).onSuccess(new ArrayList<MovieModel>());
     }
 
     private Movie createMockMovie() {

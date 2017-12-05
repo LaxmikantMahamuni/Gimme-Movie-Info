@@ -63,11 +63,6 @@ public class MovieActivity extends Activity implements View.OnClickListener, Mov
     private LinearLayoutManager linearLayoutManager;
     private MovieAdapter movieAdapter;
     private ArrayList<MovieModel> data;
-    private BoundService serviceInstance;
-    private Intent intent;
-    private final boolean showActivity = true;
-    String s;
-    Movie movieChild;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -76,7 +71,6 @@ public class MovieActivity extends Activity implements View.OnClickListener, Mov
         context = getApplicationContext();
         setupViews();
         moviePresenter = new MoviePresenterImpl(this,new ConnectionManager());
-        movieChild = new MovieChild();
     }
 
     private void setupViews() {

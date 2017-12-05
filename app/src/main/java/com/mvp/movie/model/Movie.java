@@ -23,6 +23,14 @@ public class Movie {
     @Expose
     private List<Result> results = null;
 
+    public Movie(Integer page, Integer totalResults, Integer totalPages, List<Result> results, int protectedVar) {
+        this.page = page;
+        this.totalResults = totalResults;
+        this.totalPages = totalPages;
+        this.results = results;
+        this.protectedVar = protectedVar;
+    }
+
     public int getProtectedVar() {
         return protectedVar;
     }

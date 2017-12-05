@@ -1,9 +1,9 @@
 package com.mvp.movie.presentor;
 
-import com.mvp.movie.ConnectionManager;
 import com.mvp.movie.Connectivity;
 import com.mvp.movie.R;
 import com.mvp.movie.model.Movie;
+import com.mvp.movie.model.Result;
 import com.mvp.movie.presentor.intercator.MovieInteractor;
 import com.mvp.movie.view.MovieView;
 
@@ -12,15 +12,15 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.internal.stubbing.answers.CallsRealMethods;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.stubbing.Answer;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.doCallRealMethod;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -38,11 +38,13 @@ public class MoviePresenterImplTest {
     @Mock
     private Connectivity connectivity;
     @Mock
-    MovieInteractor movieIntercator;
+    MovieInteractor movieInteractor; //IRepo
+
+    private final String moviename = "Whiplash";
 
     @Before
     public void setup() throws Exception {
-        moviePresenter = new MoviePresenterImpl(movieView, connectivity, movieIntercator);
+        moviePresenter = new MoviePresenterImpl(movieView, connectivity, movieInteractor);
         movie = createMockMovie();
     }
 
@@ -55,28 +57,49 @@ public class MoviePresenterImplTest {
 
     @Test
     public void shouldShowNoInternetError() throws Exception {
-        when(movieView.getMovieName()).thenReturn("golmaal");
+        when(movieView.getMovieName()).thenReturn(moviename);
         when(connectivity.isConnected()).thenReturn(false);
         moviePresenter.onSubmitClicked();
         verify(movieView).internetRequired(R.string.error_no_internet);
     }
 
     @Test
+
     public void shouldShowSuccess() throws Exception {
-        when(movieView.getMovieName()).thenReturn("golmaal");
+        final int index = 1;
+        when(movieView.getMovieName()).thenReturn(moviename);
         when(connectivity.isConnected()).thenReturn(true);
 
-        MovieInteractor.OnMovieResultListener onMovieResultListener = Mockito.mock(MovieInteractor.OnMovieResultListener.class);
-        //when(movieIntercator.getMovieInfo(movieView.getMovieName());)
-        moviePresenter.onSubmitClicked();
-        //How to mock movie result here?
+        //Repo method for movie info accepts a movie name and a callback; callback parameter returns the result to callee,
+        //Hence we have to mock the callback parameter
 
+        //We want to stub a void method with generic
+        doAnswer(new Answer() {
+            //It allows to configure mock's answer.
+            @Override
+            public Object answer(InvocationOnMock invocation) throws Throwable {
+                //We modify the callback parameter here as we want it to return success,
+                //index defines position of the callback variable
+                ((MovieInteractor.OnMovieResultListener) invocation.getArgument(index)).onMovieRetrieveSuccess(movie);
+                return null;
+            }
+        }).when(movieInteractor).
+                getMovieInfo(any(String.class), any(MovieInteractor.OnMovieResultListener.class));
+
+        //Mocking the OnMovieResultListener callback object
+        MovieInteractor.OnMovieResultListener onMovieResultListener = Mockito.mock(MovieInteractor.OnMovieResultListener.class);
+        movieInteractor.getMovieInfo(movieView.getMovieName(), onMovieResultListener);
+
+        //verify if the result was successful, we expect it to be
+        verify(onMovieResultListener).onMovieRetrieveSuccess(any(Movie.class));
+
+        //Perform onclick and check if test runs success
+        moviePresenter.onSubmitClicked();
     }
 
     private Movie createMockMovie() {
-        Movie movie = new Movie();
-
-        return movie;
+        List<Result> list = new ArrayList<Result>();
+        return movie = new Movie(1, 1, 1, list, 1);
     }
 
     class ResultListener implements MovieInteractor.OnMovieResultListener {

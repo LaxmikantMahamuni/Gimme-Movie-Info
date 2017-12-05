@@ -9,7 +9,7 @@ import java.util.List;
  * Created by hardik on 01/11/17.
  */
 
-public class MovieChild extends Movie {
+public class MovieChild { //extends Movie {
 
     public int getMovieChild() {
         return movieChild;
@@ -20,11 +20,6 @@ public class MovieChild extends Movie {
     }
 
     public int movieChild = 3;
-
-    @Override
-    public int getProtectedVar() {
-        return super.getProtectedVar();
-    }
 
     private void iamprivate(){
 

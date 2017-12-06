@@ -1,9 +1,11 @@
-package com.mvp.movie;
+package com.mvp.movie.ui;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
+
+import com.mvp.movie.R;
 
 /**
  * Created by hardik on 24/11/17.

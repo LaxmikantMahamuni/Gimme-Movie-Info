@@ -1,50 +1,27 @@
-package com.mvp.movie;
+package com.mvp.movie.ui;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.ComponentName;
 import android.content.Context;
-import android.content.Intent;
-import android.content.ServiceConnection;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.IBinder;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.mvp.movie.util.ConnectionManager;
+import com.mvp.movie.R;
 import com.mvp.movie.adapter.MovieAdapter;
 import com.mvp.movie.adapter.holder.MovieHolder;
 import com.mvp.movie.adapter.model.MovieModel;
-import com.mvp.movie.model.Abs;
-import com.mvp.movie.model.AbsCon;
-import com.mvp.movie.model.JustImmutableClass;
-import com.mvp.movie.model.Movie;
-import com.mvp.movie.model.MovieChild;
 import com.mvp.movie.presentor.MoviePresenter;
 import com.mvp.movie.presentor.MoviePresenterImpl;
-import com.mvp.movie.presentor.intercator.MovieInteractorImpl;
-import com.mvp.movie.service.BoundService;
-import com.mvp.movie.thread.ThreadRunnable;
+import com.mvp.movie.intercator.MovieInteractorImpl;
 import com.mvp.movie.view.MovieView;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.Scanner;
-import java.util.logging.Logger;
 
 /**
  * Created by hardik on 01/11/17.
@@ -71,7 +48,7 @@ public class MovieActivity extends Activity implements View.OnClickListener, Mov
         setContentView(R.layout.activity_movie);
         context = getApplicationContext();
         setupViews();
-        moviePresenter = new MoviePresenterImpl(this,new ConnectionManager(),new MovieInteractorImpl());
+        moviePresenter = new MoviePresenterImpl(this, new ConnectionManager(), new MovieInteractorImpl());
     }
 
     private void setupViews() {
@@ -122,8 +99,8 @@ public class MovieActivity extends Activity implements View.OnClickListener, Mov
     }
 
     @Override
-    public void onFailed(String errorMessage) {
-        Toast.makeText(context, "Failed, Reason " + errorMessage, Toast.LENGTH_SHORT).show();
+    public void onFailed(int resId) {
+        Toast.makeText(context, getString(resId), Toast.LENGTH_SHORT).show();
     }
 
     @Override

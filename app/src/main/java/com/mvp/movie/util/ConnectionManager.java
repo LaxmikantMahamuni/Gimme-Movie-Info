@@ -1,8 +1,10 @@
-package com.mvp.movie;
+package com.mvp.movie.util;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+
+import com.mvp.movie.App;
 
 /**
  * To check network connections states

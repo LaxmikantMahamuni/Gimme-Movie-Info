@@ -1,4 +1,4 @@
-package com.mvp.movie.presentor.intercator;
+package com.mvp.movie.intercator;
 
 import com.mvp.movie.api.RestClient;
 import com.mvp.movie.model.Movie;
@@ -14,8 +14,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class MovieInteractorImpl implements MovieInteractor {
     String api_key = "7c67790b259a965357bdf4b03febee52";
-    //httpmocking
-    //
+
     @Override
     public void getMovieInfo(String movieName, final OnMovieResultListener onMovieResultListener) {
         RestClient.getRestClient().searchMovie(api_key, movieName).

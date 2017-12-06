@@ -1,4 +1,4 @@
-package com.mvp.movie;
+package com.mvp.movie.util;
 
 /**
  * Created by hardik on 07/11/17.

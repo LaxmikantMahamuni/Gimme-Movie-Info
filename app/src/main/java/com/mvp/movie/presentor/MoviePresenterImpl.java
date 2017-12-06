@@ -4,13 +4,11 @@ package com.mvp.movie.presentor;
  * Created by hardik on 01/11/17.
  */
 
-import com.mvp.movie.ConnectionManager;
-import com.mvp.movie.Connectivity;
+import com.mvp.movie.util.Connectivity;
 import com.mvp.movie.R;
 import com.mvp.movie.adapter.model.MovieModel;
 import com.mvp.movie.model.Result;
-import com.mvp.movie.presentor.intercator.MovieInteractor;
-import com.mvp.movie.presentor.intercator.MovieInteractorImpl;
+import com.mvp.movie.intercator.MovieInteractor;
 import com.mvp.movie.view.MovieView;
 import com.mvp.movie.model.Movie;
 
@@ -60,7 +58,7 @@ public class MoviePresenterImpl implements MoviePresenter, MovieInteractor.OnMov
     @Override
     public void onMovieRetrieveError(Throwable e) {
         if (movieView != null) {
-            movieView.onFailed(e.getMessage());
+            movieView.onFailed(R.string.error_failed_to_get_movie_result);
         }
     }
 

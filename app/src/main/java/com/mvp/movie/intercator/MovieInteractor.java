@@ -1,4 +1,4 @@
-package com.mvp.movie.presentor.intercator;
+package com.mvp.movie.intercator;
 
 /**
  * Created by hardik on 01/11/17.

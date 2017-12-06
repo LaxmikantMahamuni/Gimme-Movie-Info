@@ -19,5 +19,5 @@ public interface MovieView {
 
     void onSuccess(List<MovieModel> movieModel);
 
-    void onFailed(String errorMessage);
+    void onFailed(int resId);
 }
